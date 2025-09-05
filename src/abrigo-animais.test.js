@@ -38,6 +38,28 @@ describe('Abrigo de Animais', () => {
     expect(resultado.erro).toBeFalsy();
   });
 
+  test('Deve rejeitar brinquedo inválido', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'CAIXA,CORDA',
+      'RATO,BOLA',
+      'Rex,Fofo'
+    );
+
+    expect(resultado.erro).toBe('Brinquedo inválido');
+    expect(resultado.lista).toBeFalsy();
+  });
+
+  test('Deve rejeitar brinquedo duplicado', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'CAIXA,RATO',
+      'BOLA,BOLA',
+      'Rex,Fofo'
+    );
+
+    expect(resultado.erro).toBe('Brinquedo inválido');
+    expect(resultado.lista).toBeFalsy();
+  });
+
   test('Deve rejeitar animal duplicado', () => {
     const resultado = new AbrigoAnimais().encontraPessoas(
       'CAIXA,RATO',
