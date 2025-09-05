@@ -1,4 +1,4 @@
-import animaisDisponiveis from './animais-disponiveis-adocao';
+import { animaisDisponiveis } from './animais-disponiveis-adocao';
 
 class AbrigoAnimais {
   mostraBrinquedos(brinquedos, animal) {
@@ -24,13 +24,18 @@ class AbrigoAnimais {
   encontraPessoas(brinquedosPessoa1, brinquedosPessoa2, ordemAnimais) {
     const listaBrinquedosPessoa1 = brinquedosPessoa1.split(',');
     const listaBrinquedosPessoa2 = brinquedosPessoa2.split(',');
-    const listaAnimais = ordemAnimais
-      .split(',')
-      .map((nomeAnimal) =>
-        animaisDisponiveis.find(
-          (animalDisponivel) => nomeAnimal === animalDisponivel.nome
-        )
-      );
+    const nomesAnimais = ordemAnimais.split(',');
+    if (nomesAnimais.length != new Set(nomesAnimais).size) {
+      return { erro: 'Animal inválido' };
+    }
+    const listaAnimais = nomesAnimais.map((nomeAnimal) =>
+      animaisDisponiveis.find(
+        (animalDisponivel) => nomeAnimal === animalDisponivel.nome
+      )
+    );
+    if (listaAnimais.includes(undefined)) {
+      return { erro: 'Animal inválido' };
+    }
   }
 }
 

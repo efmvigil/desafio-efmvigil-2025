@@ -1,4 +1,4 @@
-animaisDisponiveis = [
+const animaisDisponiveis = [
   {
     nome: 'Rex',
     especie: 'cão',
@@ -36,4 +36,4 @@ animaisDisponiveis = [
   },
 ];
 
-export { animaisDisponiveis as animaisDisponiveis };
+export { animaisDisponiveis };
