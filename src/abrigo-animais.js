@@ -25,9 +25,40 @@ class AbrigoAnimais {
     if (listaAnimais.includes(undefined)) {
       return { erro: 'Animal inválido' };
     }
+
+    const animaisAdotadosPessoa1 = [];
+    const animaisAdotadosPessoa2 = [];
+
+    listaAnimais.forEach((animal) => {
+      const pessoa1PodeAdotar = this.verificaBrinquedosCorretos(
+        listaBrinquedosPessoa1,
+        animal
+      );
+      const pessoa2PodeAdotar = this.verificaBrinquedosCorretos(
+        listaBrinquedosPessoa2,
+        animal
+      );
+      if (pessoa1PodeAdotar && !pessoa2PodeAdotar)
+        animaisAdotadosPessoa1.push(animal.nome);
+      if (!pessoa1PodeAdotar && pessoa2PodeAdotar)
+        animaisAdotadosPessoa2.push(animal.nome);
+    });
+
+    const listaResultado = [];
+
+    nomesAnimais.toSorted().forEach((nome) => {
+      let destino;
+      if (animaisAdotadosPessoa1.includes(nome)) destino = 'pessoa 1';
+      else if (animaisAdotadosPessoa2.includes(nome)) destino = 'pessoa 2';
+      else destino = 'abrigo';
+
+      listaResultado.push(nome + ' - ' + destino);
+    });
+
+    return { lista: listaResultado };
   }
 
-  mostraBrinquedos(brinquedos, animal) {
+  verificaBrinquedosCorretos(brinquedos, animal) {
     const brinquedosCorretosParaEsseAnimal = [];
 
     brinquedos.forEach((brinquedo) => {
