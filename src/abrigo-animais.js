@@ -38,9 +38,18 @@ class AbrigoAnimais {
         listaBrinquedosPessoa2,
         animal
       );
-      if (pessoa1PodeAdotar && !pessoa2PodeAdotar)
+
+      if (
+        pessoa1PodeAdotar &&
+        !pessoa2PodeAdotar &&
+        animaisAdotadosPessoa1.length < 3
+      )
         animaisAdotadosPessoa1.push(animal.nome);
-      if (!pessoa1PodeAdotar && pessoa2PodeAdotar)
+      if (
+        !pessoa1PodeAdotar &&
+        pessoa2PodeAdotar &&
+        animaisAdotadosPessoa2.length < 3
+      )
         animaisAdotadosPessoa2.push(animal.nome);
     });
 
