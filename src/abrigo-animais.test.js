@@ -69,11 +69,37 @@ describe('Abrigo de Animais', () => {
       'Loco,Bebe,Rex,Bola'
     );
 
+    console.log(resultado);
+
     expect(resultado.lista[0]).toBe('Bebe - pessoa 2');
     expect(resultado.lista[1]).toBe('Bola - abrigo');
     expect(resultado.lista[2]).toBe('Loco - pessoa 2');
     expect(resultado.lista[3]).toBe('Rex - pessoa 2');
     expect(resultado.lista.length).toBe(4);
+    expect(resultado.erro).toBeFalsy();
+  });
+
+  test('Deve adotar Loco com brinquedos na ordem errada se ele tiver companhia', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'RATO,BOLA',
+      'RATO,BOLA,LASER,SKATE',
+      'Mimi,Loco'
+    );
+    expect(resultado.lista[0]).toBe('Loco - pessoa 2');
+    expect(resultado.lista[1]).toBe('Mimi - pessoa 2');
+    expect(resultado.lista.length).toBe(2);
+    expect(resultado.erro).toBeFalsy();
+  });
+
+  test('Não deve adotar Loco com brinquedos na ordem errada se ele não tiver companhia', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'RATO,BOLA',
+      'RATO,BOLA,SKATE',
+      'Mimi,Loco'
+    );
+    expect(resultado.lista[0]).toBe('Loco - abrigo');
+    expect(resultado.lista[1]).toBe('Mimi - abrigo');
+    expect(resultado.lista.length).toBe(2);
     expect(resultado.erro).toBeFalsy();
   });
 

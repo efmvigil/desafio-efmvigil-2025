@@ -1,4 +1,4 @@
-import { animaisDisponiveis } from './animais-disponiveis-adocao';
+import { animaisDisponiveis } from './animais-disponiveis-adocao.js';
 
 class AbrigoAnimais {
   encontraPessoas(brinquedosPessoa1, brinquedosPessoa2, ordemAnimais) {
@@ -17,6 +17,7 @@ class AbrigoAnimais {
     if (nomesAnimais.length != new Set(nomesAnimais).size) {
       return { erro: 'Animal inválido' };
     }
+
     const listaAnimais = nomesAnimais.map((nomeAnimal) =>
       animaisDisponiveis.find(
         (animalDisponivel) => nomeAnimal === animalDisponivel.nome
@@ -32,11 +33,13 @@ class AbrigoAnimais {
     listaAnimais.forEach((animal) => {
       const pessoa1PodeAdotar = this.verificaBrinquedosCorretos(
         listaBrinquedosPessoa1,
-        animal
+        animal,
+        animaisAdotadosPessoa1
       );
       const pessoa2PodeAdotar = this.verificaBrinquedosCorretos(
         listaBrinquedosPessoa2,
-        animal
+        animal,
+        animaisAdotadosPessoa2
       );
 
       if (
@@ -67,10 +70,20 @@ class AbrigoAnimais {
     return { lista: listaResultado };
   }
 
-  verificaBrinquedosCorretos(brinquedos, animal) {
+  verificaBrinquedosCorretos(brinquedosMostrados, animal, animaisJaAdotados) {
+    if (animal.nome === 'Loco' && animaisJaAdotados.length > 0) {
+      if (
+        animal.brinquedosFavoritos.every((brinquedo) =>
+          brinquedosMostrados.includes(brinquedo)
+        )
+      )
+        return true;
+      else return false;
+    }
+
     const brinquedosCorretosParaEsseAnimal = [];
 
-    brinquedos.forEach((brinquedo) => {
+    brinquedosMostrados.forEach((brinquedo) => {
       if (animal.brinquedosFavoritos.includes(brinquedo)) {
         brinquedosCorretosParaEsseAnimal.push(brinquedo);
       }
