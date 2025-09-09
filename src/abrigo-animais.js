@@ -47,21 +47,31 @@ class AbrigoAnimais {
         !pessoa2PodeAdotar &&
         animaisAdotadosPessoa1.length < 3
       )
-        animaisAdotadosPessoa1.push(animal.nome);
+        animaisAdotadosPessoa1.push(animal);
       if (
         !pessoa1PodeAdotar &&
         pessoa2PodeAdotar &&
         animaisAdotadosPessoa2.length < 3
       )
-        animaisAdotadosPessoa2.push(animal.nome);
+        animaisAdotadosPessoa2.push(animal);
     });
 
     const listaResultado = [];
 
     nomesAnimais.toSorted().forEach((nome) => {
       let destino;
-      if (animaisAdotadosPessoa1.includes(nome)) destino = 'pessoa 1';
-      else if (animaisAdotadosPessoa2.includes(nome)) destino = 'pessoa 2';
+      if (
+        animaisAdotadosPessoa1.some(
+          (animalAdotado) => animalAdotado.nome === nome
+        )
+      )
+        destino = 'pessoa 1';
+      else if (
+        animaisAdotadosPessoa2.some(
+          (animalAdotado) => animalAdotado.nome === nome
+        )
+      )
+        destino = 'pessoa 2';
       else destino = 'abrigo';
 
       listaResultado.push(nome + ' - ' + destino);
@@ -71,6 +81,31 @@ class AbrigoAnimais {
   }
 
   verificaBrinquedosCorretos(brinquedosMostrados, animal, animaisJaAdotados) {
+    if (animal.especie === 'gato' && animaisJaAdotados.length > 0) {
+      for (const animalAdotado of animaisJaAdotados) {
+        if (
+          animalAdotado.brinquedosFavoritos.some((brinquedo) =>
+            animal.brinquedosFavoritos.includes(brinquedo)
+          )
+        ) {
+          return false;
+        }
+      }
+    }
+    const brinquedosJaComGato = [];
+    animaisJaAdotados.forEach((animalAdotado) => {
+      if (animalAdotado.especie === 'gato') {
+        animalAdotado.brinquedosFavoritos.forEach((brinquedo) =>
+          brinquedosJaComGato.push(brinquedo)
+        );
+      }
+    });
+
+    brinquedosMostrados = brinquedosMostrados.filter(
+      (brinquedo) => !brinquedosJaComGato.includes(brinquedo)
+    );
+
+    //Interpretei que a regra 6 significa que Loco não se importa com a ordem dos brinquedos se outro animal já foi adotado pela mesma pessoa antes dele
     if (animal.nome === 'Loco' && animaisJaAdotados.length > 0) {
       if (
         animal.brinquedosFavoritos.every((brinquedo) =>

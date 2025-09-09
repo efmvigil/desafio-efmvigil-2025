@@ -50,6 +50,30 @@ describe('Abrigo de Animais', () => {
     expect(resultado.erro).toBeFalsy();
   });
 
+  test('Se já adotou gato, não deve adotar outro animal que queira brinquedo idêntico', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'RATO,BOLA,SKATE',
+      'NOVELO,SKATE',
+      'Zero,Loco'
+    );
+    expect(resultado.lista[0]).toBe('Loco - abrigo');
+    expect(resultado.lista[1]).toBe('Zero - pessoa 1');
+    expect(resultado.lista.length).toBe(2);
+    expect(resultado.erro).toBeFalsy();
+  });
+
+  test('Se já adotou outro animal que queira brinquedo idêntico, não deve adotar gato', () => {
+    const resultado = new AbrigoAnimais().encontraPessoas(
+      'SKATE,RATO,BOLA,LASER',
+      'NOVELO,SKATE',
+      'Rex,Mimi'
+    );
+    expect(resultado.lista[0]).toBe('Mimi - abrigo');
+    expect(resultado.lista[1]).toBe('Rex - pessoa 1');
+    expect(resultado.lista.length).toBe(2);
+    expect(resultado.erro).toBeFalsy();
+  });
+
   test('Deve manter animal no abrigo se ambas as pessoas podem adotar', () => {
     const resultado = new AbrigoAnimais().encontraPessoas(
       'RATO,BOLA',
@@ -62,14 +86,12 @@ describe('Abrigo de Animais', () => {
     expect(resultado.erro).toBeFalsy();
   });
 
-  test('Deve permitir apenas 3 adoções para uma pessoa mesmo se puder mais', () => {
+  test('Deve permitir apenas 3 adoções para uma pessoa mesmo se puder adotar mais', () => {
     const resultado = new AbrigoAnimais().encontraPessoas(
       'BOLA,LASER',
       'SKATE,LASER,RATO,BOLA,CAIXA,NOVELO',
       'Loco,Bebe,Rex,Bola'
     );
-
-    console.log(resultado);
 
     expect(resultado.lista[0]).toBe('Bebe - pessoa 2');
     expect(resultado.lista[1]).toBe('Bola - abrigo');
